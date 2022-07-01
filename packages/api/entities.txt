@@ -1,0 +1,6 @@
+user: OK / admin | user
+project: TODO | name description versions createdBy
+version: TODO | name description createdBy
+feature: TODO | project createdBy
+test case: TODO | project versions bdd createdBy
+test execution: TODO / date result executedBy

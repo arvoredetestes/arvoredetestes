@@ -1,0 +1,59 @@
+@startuml
+enum UserRole {
+    admin
+    user
+}
+interface BaseDoc {
+    +createdAt: string
+    +updatedAt: string
+    +_id: string
+}
+interface User extends BaseDoc {
+    +name: string
+    +role: UserRole
+    +email: string
+    +token: string
+}
+interface Project {
+    +name: string
+    +createdBy: string
+    +description: string
+}
+interface Version {
+    +name: string
+    +description: string
+    +createdBy: string
+    +projectId: string
+}
+interface Feature {
+    +name: string
+    +description: string
+    +projectId: string
+    +createdBy: string
+    +versionsIds: string[]
+}
+enum BDDOperator {
+    BACKGROUND
+    SCENARIO
+    GIVEN
+    WHEN
+    THEN
+    AND
+    BUT
+}
+interface Bdd {
+    +steps: { operator: BDDOperator; content: string; resolution: boolean | undefined; }[]
+}
+interface TestCase {
+    +name: string
+    +createdBy: string
+    +description: string
+    +versionsIds: string[]
+    +bdd: Bdd
+}
+interface TestExecution extends TestCase {
+    +executedBy: string
+    +executionDate: string
+    +notes: string
+}
+@enduml

@@ -1,0 +1,135 @@
+{
+  "name": "tcc",
+  "repository": "git://github.com/GuitarWag/tcc.git",
+  "private": true,
+  "author": "Wagner Silva",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/babel**",
+      "**/eslint**",
+      "**/jest"
+    ]
+  },
+  "scripts": {
+    "bootstrap": "lerna bootstrap --use-workspaces && yarn hooks:install",
+    "fix": "run-s fix:*",
+    "fix:code": "yarn lint:code --fix",
+    "fix:other": "yarn prettier --write",
+    "hooks:uninstall": "node node_modules/husky uninstall",
+    "hooks:install": "node node_modules/husky install",
+    "lerna:publish": "npx lerna publish --conventional-commits",
+    "lerna:changed": "npx lerna changed",
+    "lint": "run-p --continue-on-error lint:*",
+    "lint:code": "eslint --ignore-path .gitignore --ignore-path .prettierignore --ext .ts,.tsx .",
+    "lint:other": "yarn prettier --check",
+    "prebootstrap": "yarn",
+    "prettier": "prettier \"**/*.{md,css,scss,yaml,yml}\"",
+    "test": "lerna run --stream test"
+  },
+  "devDependencies": {
+    "@babel/core": "7.16.0",
+    "@babel/eslint-parser": "7.16.3",
+    "@babel/node": "7.16.0",
+    "@babel/preset-env": "7.16.0",
+    "@babel/runtime": "7.16.3",
+    "@commitlint/cli": "13.2.1",
+    "@commitlint/config-conventional": "13.2.0",
+    "@commitlint/config-lerna-scopes": "13.2.0",
+    "@types/hash-sum": "^1.0.0",
+    "@types/jest": "^27.0.1",
+    "@types/node": "16.11.7",
+    "@types/prettier": "2.4.2",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.3",
+    "@types/react-lottie": "^1.2.6",
+    "@typescript-eslint/eslint-plugin": "4.33.0",
+    "@typescript-eslint/parser": "4.33.0",
+    "@welldone-software/why-did-you-render": "^7.0.1",
+    "autoprefixer": "^10.4.7",
+    "babel-jest": "27.3.1",
+    "babel-loader": "8.2.3",
+    "chalk": "4.1.2",
+    "commitlint": "13.2.1",
+    "cross-env": "7.0.3",
+    "env-cmd": "^10.1.0",
+    "eslint": "7.32.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jest": "24.7.0",
+    "eslint-plugin-prettier": "3.4.1",
+    "eslint-plugin-react-hooks": "^4.5.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-unused-imports": "^1.1.5",
+    "husky": "7.0.4",
+    "jest": "27.3.1",
+    "lerna": "4.0.0",
+    "lerna-changelog": "2.2.0",
+    "lint-staged": "11.2.6",
+    "npm-run-all": "4.1.5",
+    "postcss": "^8.4.14",
+    "prettier": "2.4.1",
+    "prettier-eslint": "13.0.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "rimraf": "3.0.2",
+    "tailwindcss": "^3.0.24",
+    "ts-jest": "27.0.7",
+    "ts-node": "10.4.0",
+    "typescript": "4.4.4"
+  },
+  "engines": {
+    "node": ">=10.17.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "yarn fix:code"
+    ],
+    "*.{md,css,scss,yaml,yml}": [
+      "yarn fix:other"
+    ]
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Opera versions",
+    "last 2 Firefox versions",
+    "last 2 Edge versions",
+    "last 2 Safari versions",
+    "last 2 iOS versions",
+    "last 2 ChromeAndroid versions"
+  ],
+  "dependencies": {
+    "@craco/craco": "^6.4.3",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@ez-dux/async": "^1.1.0",
+    "@ez-dux/core": "^1.1.1",
+    "@ez-dux/react": "^1.1.1",
+    "@mui/icons-material": "^5.8.0",
+    "@mui/lab": "^5.0.0-alpha.83",
+    "@mui/material": "^5.8.1",
+    "@mui/x-data-grid": "^5.11.1",
+    "ahooks": "^3.4.1",
+    "axios": "^0.27.2",
+    "chart.js": "^3.8.0",
+    "dayjs": "^1.11.3",
+    "formik": "^2.2.9",
+    "hash-sum": "^2.0.0",
+    "lodash": "^4.17.21",
+    "nanoid": "^3.3.4",
+    "react-chartjs-2": "^4.2.0",
+    "react-icons": "^4.3.1",
+    "react-lottie": "^1.2.3",
+    "react-router-dom": "6",
+    "use-deep-compare": "^1.1.0",
+    "yup": "^0.32.11"
+  }
+}
