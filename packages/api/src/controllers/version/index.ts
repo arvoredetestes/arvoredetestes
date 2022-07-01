@@ -4,7 +4,10 @@ import { Controllers } from "../../util/types";
 const versionController: Controllers = {
   async index(req, res) {
     try {
-      const items = await Version.find();
+      const query = {
+        projectId: req.query.project,
+      };
+      const items = await Version.find(query);
 
       res.status(200).json({
         status: "success",

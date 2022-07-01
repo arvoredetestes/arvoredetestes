@@ -1,20 +1,10 @@
-import {
-  useData as useFeatures,
-  useStartOnMount as useLoadFeaturesOnMount,
-} from "@monorepo/store/src/feature/retrieve";
+import { useData as useFeatures } from "@monorepo/store/src/feature/retrieve";
 import { useSetDashboardSelection } from "@monorepo/store/src/global";
-import {
-  useData as useTestCases,
-  useStartOnMount as useLoadTestCasesOnMount,
-} from "@monorepo/store/src/test-case/retrieve";
-import {
-  useData as useTestExecutions,
-  useStartOnMount as useLoadTestExecutionsOnMount,
-} from "@monorepo/store/src/test-execution/retrieve";
-import {
-  useData as useTestScripts,
-  useStartOnMount as useLoadTestScriptsOnMount,
-} from "@monorepo/store/src/test-script/retrieve";
+import { useReloadEverythingOnMount } from "@monorepo/store/src/integration/hooks";
+import { useData as useTestCases } from "@monorepo/store/src/test-case/retrieve";
+import { useData as useTestExecutions } from "@monorepo/store/src/test-execution/retrieve";
+import { useData as useTestScripts } from "@monorepo/store/src/test-script/retrieve";
+import { useGetUserById } from "@monorepo/store/src/user/users";
 import { Text } from "@monorepo/texts/src/Components";
 import { TEXT_KEYS } from "@monorepo/texts/src/keys";
 import { TestExecution } from "@monorepo/types";
@@ -23,7 +13,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import TreeItem from "@mui/lab/TreeItem";
 import TreeViewMUI from "@mui/lab/TreeView";
 import dayjs from "dayjs";
-import { filter } from "lodash";
+import { filter, groupBy, keys } from "lodash";
 import map from "lodash/map";
 import * as React from "react";
 import { useMemo } from "react";
@@ -54,10 +44,8 @@ const BOLD = {
   fontWeight: "bold",
 };
 function useTreeData() {
-  useLoadFeaturesOnMount(null, null);
-  useLoadTestCasesOnMount(null, null);
-  useLoadTestExecutionsOnMount(null, null);
-  useLoadTestScriptsOnMount(null, null);
+  useReloadEverythingOnMount();
+  const getUserById = useGetUserById();
   const features = useFeatures();
   const testCases = useTestCases();
   const testExecutions = useTestExecutions();
@@ -81,19 +69,37 @@ function useTreeData() {
           items: U.Nullable<TestExecution[]>,
           route: string
         ) {
-          return map(
-            filter(items, (item) => {
-              return item.featureId === ft._id;
-            }),
-            (tcc) => ({
-              name:
-                dayjs(tcc.executionDate).format("DD/MMMM/YYYY") +
-                " " +
-                tcc.name,
-              id: `/feature/${ft._id}/${route}/${tcc._id}`,
-              children: [],
-            })
+          const dates = groupBy(
+            items,
+            (item) =>
+              dayjs(item.executionDate).format("DD/MMMM/YYYY") +
+              " - " +
+              getUserById(item.executedBy)?.name
           );
+          const datesKeys = keys(dates);
+          return map(datesKeys, (key) => ({
+            name: key,
+            id: key,
+            children: map(dates[key], (item) => ({
+              name: item.name,
+              id: `/feature/${ft._id}/${route}/${item._id}`,
+              children: [],
+            })),
+          }));
+
+          // return map(
+          //   filter(items, (item) => {
+          //     return item.featureId === ft._id;
+          //   }),
+          //   (tcc) => ({
+          //     name:
+          //       dayjs(tcc.executionDate).format("DD/MMMM/YYYY") +
+          //       " " +
+          //       tcc.name,
+          //     id: `/feature/${ft._id}/${route}/${tcc._id}`,
+          //     children: [],
+          //   })
+          // );
         }
         const featureTestCases = filterAndMap(testCases, "test-case");
         const featureTestExecutions = filterTEAndMap(
@@ -124,7 +130,7 @@ function useTreeData() {
           ],
         };
       }),
-    [features, testCases, testExecutions, testScripts]
+    [features, getUserById, testCases, testExecutions, testScripts]
   );
 }
 

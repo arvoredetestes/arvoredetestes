@@ -6,6 +6,7 @@ import {
   useSetGlobalProject,
   useSetGlobalVersion,
 } from "@monorepo/store/src/global";
+import { useReloadEverything } from "@monorepo/store/src/integration/hooks";
 import { useData, useStartOnMount } from "@monorepo/store/src/project/retrieve";
 import { useIsAdmin } from "@monorepo/store/src/user/login";
 import {
@@ -81,6 +82,7 @@ export const ProjectsSelectField: React.FC<ProjectsSelectFields & SelectProps> =
     );
   };
 export const ProjectSelector: React.FC = () => {
+  const reload = useReloadEverything();
   useStartOnMount(null, null);
   const globalProject = useGlobalProject();
   const setGlobalProject = useSetGlobalProject();
@@ -97,9 +99,10 @@ export const ProjectSelector: React.FC = () => {
       } else {
         // @ts-ignore
         setGlobalProject(find(projects, { _id: data.project }), null);
+        reload();
       }
     },
-    [navigate, projects, setGlobalProject]
+    [navigate, projects, setGlobalProject, reload]
   );
 
   const initialValues = useMemo(() => {
@@ -178,6 +181,8 @@ export const VersionsSelectField: React.FC<ProjectsSelectFields & SelectProps> =
   };
 
 export const VersionSelector: React.FC = () => {
+  const reload = useReloadEverything();
+
   useLoadVersionsOnMount(null, null);
   const globalVersion = useGlobalVersion();
   const setGlobalVersion = useSetGlobalVersion();
@@ -194,9 +199,10 @@ export const VersionSelector: React.FC = () => {
       } else {
         // @ts-ignore
         setGlobalVersion(find(versions, { _id: data.version }), null);
+        reload();
       }
     },
-    [navigate, setGlobalVersion, versions]
+    [navigate, setGlobalVersion, versions, reload]
   );
 
   const initialValues = useMemo(() => {

@@ -4,7 +4,11 @@ import { Controllers } from "../../util/types";
 const projectController: Controllers = {
   async index(req, res) {
     try {
-      const items = await TestExecution.find();
+      const query = {
+        projectId: req.query.project,
+        versionsIds: req.query.version,
+      };
+      const items = await TestExecution.find(query);
 
       res.status(200).json({
         status: "success",

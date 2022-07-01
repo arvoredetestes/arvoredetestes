@@ -1,7 +1,7 @@
 import { TestScript } from "@monorepo/types";
 
 import { RootState } from "../index";
-import { api } from "./api";
+import { api, getParams } from "./api";
 
 interface TestScriptBaseResponse {
   status: string;
@@ -49,7 +49,12 @@ export class TestScriptService {
   };
 
   static retrieve: () => Promise<TestScript[]> = async () => {
-    const response = await api.get<RetrieveTestScriptsResponse>("/test-script");
+    const response = await api.get<RetrieveTestScriptsResponse>(
+      "/test-script",
+      {
+        params: getParams(),
+      }
+    );
     return response.data.data;
   };
 

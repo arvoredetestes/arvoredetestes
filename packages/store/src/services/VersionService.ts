@@ -1,7 +1,7 @@
 import { Version } from "@monorepo/types";
 
 import { RootState } from "../index";
-import { api } from "./api";
+import { api, getParams } from "./api";
 
 interface VersionBaseResponse {
   status: string;
@@ -48,7 +48,9 @@ export class VersionService {
   };
 
   static retrieve: () => Promise<Version[]> = async () => {
-    const response = await api.get<RetrieveVersionsResponse>("/version");
+    const response = await api.get<RetrieveVersionsResponse>("/version", {
+      params: getParams(),
+    });
     return response.data.data;
   };
 

@@ -1,7 +1,7 @@
 import { TestExecution } from "@monorepo/types";
 
 import { RootState } from "../index";
-import { api } from "./api";
+import { api, getParams } from "./api";
 
 interface TestExecutionBaseResponse {
   status: string;
@@ -50,7 +50,10 @@ export class TestExecutionService {
 
   static retrieve: () => Promise<TestExecution[]> = async () => {
     const response = await api.get<RetrieveTestExecutionsResponse>(
-      "/test-execution"
+      "/test-execution",
+      {
+        params: getParams(),
+      }
     );
     return response.data.data;
   };

@@ -1,7 +1,7 @@
 import { TestCase } from "@monorepo/types";
 
 import { RootState } from "../index";
-import { api } from "./api";
+import { api, getParams } from "./api";
 
 interface TestCaseBaseResponse {
   status: string;
@@ -48,7 +48,9 @@ export class TestCaseService {
   };
 
   static retrieve: () => Promise<TestCase[]> = async () => {
-    const response = await api.get<RetrieveTestCasesResponse>("/test-case");
+    const response = await api.get<RetrieveTestCasesResponse>("/test-case", {
+      params: getParams(),
+    });
     return response.data.data;
   };
 

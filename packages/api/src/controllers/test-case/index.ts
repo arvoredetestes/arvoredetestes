@@ -4,7 +4,11 @@ import { Controllers } from "../../util/types";
 const testCaseController: Controllers = {
   async index(req, res) {
     try {
-      const items = await TestCase.find();
+      const query = {
+        projectId: req.query.project,
+        versionsIds: req.query.version,
+      };
+      const items = await TestCase.find(query);
 
       res.status(200).json({
         status: "success",

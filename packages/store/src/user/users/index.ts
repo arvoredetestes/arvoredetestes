@@ -6,7 +6,7 @@ import {
 } from "@ez-dux/async";
 import { User } from "@monorepo/types";
 import { find } from "lodash";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { U } from "ts-toolbelt";
 
 import { Service } from "../../services/Service";
@@ -35,4 +35,16 @@ export const useUserById = (id: string): U.Nullable<Omit<User, "token">> => {
   return useMemo(() => {
     return find(data, { _id: id });
   }, [data, id]);
+};
+export const useGetUserById = (): ((
+  id: string
+) => U.Nullable<Omit<User, "token">>) => {
+  useStartOnMount(null, null);
+  const data = useData();
+  return useCallback(
+    (id: string) => {
+      return find(data, { _id: id });
+    },
+    [data]
+  );
 };

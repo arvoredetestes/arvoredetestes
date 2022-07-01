@@ -9,6 +9,7 @@ import {
   useStartOnMount as useLoadFeaturesOnMount,
 } from "@monorepo/store/src/feature/retrieve";
 import { useGlobalProject, useGlobalVersion } from "@monorepo/store/src/global";
+import { useReloadEverything } from "@monorepo/store/src/integration/hooks";
 import { CreateTestCasePayload } from "@monorepo/store/src/services/TestCaseService";
 import { CreateTestExecutionPayload } from "@monorepo/store/src/services/TestExecutionService";
 import {
@@ -502,6 +503,7 @@ export const BddRendererContent: React.FC<BddRendererContentProps> = ({
   return (
     <Stack spacing={1}>
       {map(steps, (step, i) => {
+        if (!step) return null;
         let color = undefined;
         if (readOnly && step?.resolution === true) {
           color = palette.success.main;
@@ -519,7 +521,7 @@ export const BddRendererContent: React.FC<BddRendererContentProps> = ({
             <Stack width={100}>
               <Text
                 sx={BOLD_UPPERCASE}
-                messageKey={step.operator as MessageKeys}
+                messageKey={step?.operator as MessageKeys}
                 color={color}
               />
             </Stack>
@@ -551,6 +553,8 @@ export const ExecuteTestCaseForm: React.FC<{ testCaseIdParam?: string }> = ({
   const testCases = useTestCases();
   useLoadTestCase(testCaseIdParam);
   useStartOnMount(null, null);
+  const reload = useReloadEverything();
+
   const loggedUser = useData();
   const testCase = useTestCase();
   const finalTestCase = useMemo(() => {
@@ -574,14 +578,15 @@ export const ExecuteTestCaseForm: React.FC<{ testCaseIdParam?: string }> = ({
       data._id = undefined;
       createTestExecution(data, {
         onSuccess: () => {
+          reload();
           if (id && !testCaseIdParam)
             navigate(ROUTES.getFeatureTestExecutionsRoute(id));
         },
       });
     },
-    [createTestExecution, id, navigate, testCaseIdParam]
+    [reload, createTestExecution, id, navigate, testCaseIdParam]
   );
-
+  if (!finalTestCase) return null;
   return (
     <Paper sx={PAPER_STYLE}>
       <Formik

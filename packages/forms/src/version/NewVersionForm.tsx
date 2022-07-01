@@ -1,4 +1,5 @@
 import { ROUTES } from "@monorepo/navigation/src/routes";
+import { useGlobalProject } from "@monorepo/store/src/global";
 import {
   useLoading as useLoadingCreateVersion,
   useStart as useCreateVersion,
@@ -26,7 +27,7 @@ import { TextField } from "../inputs/TextField";
 class NewVersionFormData {
   description = "";
   name = "";
-  projectId = "projectId";
+  projectId = "";
 
   static PATHS = {
     description: "description",
@@ -43,8 +44,6 @@ const SCHEMA = yup.object().shape({
     .string()
     .required(TEXT_KEYS.VALIDATION_STRING_REQUIRED),
 });
-
-const INITIAL_VALUES = new NewVersionFormData();
 
 const PAPER_STYLE = {
   padding: 5,
@@ -94,10 +93,17 @@ export const NewVersionForm: React.FC = () => {
     },
     [load, navigate, start]
   );
+  const project = useGlobalProject();
+
+  const initialValues = useMemo(() => {
+    const values = new NewVersionFormData();
+    values.projectId = project?._id as string;
+    return values;
+  }, [project?._id]);
   return (
     <Paper sx={PAPER_STYLE}>
       <Formik
-        initialValues={INITIAL_VALUES}
+        initialValues={initialValues}
         onSubmit={onSubmit}
         validationSchema={SCHEMA}
       >
