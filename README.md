@@ -1,51 +1,48 @@
-# monorepo
+# Árvore de Testes
 
-A template for monorepo projects
+A Árvore de Testes se apresenta como uma ferramenta interessante e eficaz ao ser adicionada ao fluxo de trabalho do controle de qualidade de uma empresa de desenvolvimento de software. Desenvolvida com tecnologias atuais, no entanto consolidadas como React, NodeJS e MongoDB, otimizada para instalação em nuvem e com foco em instalações mais baratas ou até de graça, torna-se uma ferramenta com um baixíssimo impacto financeiro para seu uso. Com extrema capacidade e facilidade para melhorias na implementação e customizações, por ser de código-aberto pode ser incrementada de uma forma que toda a comunidade de usuários beneficiará das melhorias.
 
-> The word monorepo is a combination between “mono”, as in the Greek word mónos (in translation, alone) and an abbreviation of the word repository. A simple concept if taken verbatim: one lonely repository. The domain is software engineering so we’re referring to a home for source code, multimedia assets, binary files, and so on. But this definition is just the tip of the iceberg, since a monorepo in practice is so much more.
+#### Comandos
 
-### 😎 Guide
+Para iniciar com o projeto
 
-The monorepo structure is managed with [Lerna](https://lerna.js.org/)
-
-### 🧩 Branches
-
-- [Master](./) - with default configuration
-- [With Rollup](https://github.com/renli-tech/monorepo/tree/with-rollup) - with [Rollup](https://rollupjs.org/guide/en/) configuration for bundling files
-
-#### 😋 Features
-
-- [Eslint](https://eslint.org/) - For linting code
-- [Typescript](https://www.typescriptlang.org/) - As programming language
-- [Husky](https://typicode.github.io/husky/#/) - For running pre-commit hooks
-- [Jest](https://jestjs.io/) - For testing
-- [Prettier](https://prettier.io/) - For writing neat code
-- [Commitlint](https://commitlint.js.org/#/) - For linting commit messages
-
-#### Commands
-
-To start working with a project built with this template
-
-Run this command to bootstrap all the packages and install the dependencies
-
+Rode esse comando para instalar as dependências.
 ```sh
 
 yarn bootstrap
 
 ```
 
-#### Testing
+#### Testando
 
-Run this command to run all test
+Rode esse comando para testar.
 
 ```sh
 
 yarn run test
 
 ```
+Para rodar a aplicação localmente
+```
+cd packages/client && yarn dev
+```
 
-View the [lerna docs](https://lerna.js.org/) to see other commands
+E
 
-This template is maintained by [Renli](https://github/renli-tech)
+```
+cd packages/api && yarn dev
+```
 
-Licence [MIT](./LICENSE)
+Não se esqueça de adicionar o as suas credenciais MongoDB no arquivo .env.
+
+### Instalação
+
+É recomendado a instalação do front-end na ferramenta de hosting do Firebase.
+O deploy automático já está configurado nas GitHub Actions.
+(Qualquer hosting de front-end estático irá funcionar)
+
+O back-end recomenda-se instalar no Heroku, também há deploy automático configurado com as Actions.
+(Qualquer hosting de back-end com Docker funcionará)
+
+O MongoDB recomenda-se o uso do MongoDB Atlas.
+(Qualquer MongoDB deve funcionar)
