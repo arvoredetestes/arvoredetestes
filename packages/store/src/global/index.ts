@@ -9,6 +9,8 @@ import { Project, Version } from "@monorepo/types";
 import { useSelector } from "react-redux";
 import { U } from "ts-toolbelt";
 
+import { PARAMS_SINGLETON } from "../services/api";
+
 export const NAMESPACE = "global";
 
 class DashboardSelection {
@@ -71,6 +73,8 @@ const INITIAL_STATE = new GlobalState();
 const reducer = createReducer<Action, GlobalState>(INITIAL_STATE);
 
 reducer.addCase(setProject, (state, action) => {
+  console.log("xxx", action.payload);
+  PARAMS_SINGLETON.project = action.payload as any;
   localStorage.setItem("project", JSON.stringify(action.payload));
   return {
     ...state,
@@ -79,6 +83,7 @@ reducer.addCase(setProject, (state, action) => {
 });
 
 reducer.addCase(setVersion, (state, action) => {
+  PARAMS_SINGLETON.version = action.payload as any;
   localStorage.setItem("version", JSON.stringify(action.payload));
   return {
     ...state,

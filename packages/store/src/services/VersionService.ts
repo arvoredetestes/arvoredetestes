@@ -48,6 +48,7 @@ export class VersionService {
   };
 
   static retrieve: () => Promise<Version[]> = async () => {
+    console.log(getParams(), "xxx");
     const response = await api.get<RetrieveVersionsResponse>("/version", {
       params: getParams(),
     });

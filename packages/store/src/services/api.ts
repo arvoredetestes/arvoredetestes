@@ -35,22 +35,31 @@ export function useAxiosInterceptors(): void {
   );
 }
 
+export const PARAMS_SINGLETON = {
+  project: null,
+  version: null,
+};
+
+try {
+  PARAMS_SINGLETON.project = JSON.parse(
+    localStorage.getItem("project") || "{}"
+  );
+  PARAMS_SINGLETON.version = JSON.parse(
+    localStorage.getItem("version") || "{}"
+  );
+} catch (e) {
+  noop(e);
+}
 export function getParams(): {
   project: string;
   version: string;
 } {
-  try {
-    const project = JSON.parse(localStorage.getItem("project") || "");
-    const version = JSON.parse(localStorage.getItem("version") || "");
-    return {
-      project: project._id,
-      version: version._id,
-    };
-  } catch (e) {
-    noop(e);
-    return {
-      project: "",
-      version: "",
-    };
-  }
+  const project = PARAMS_SINGLETON.project;
+  const version = PARAMS_SINGLETON.version;
+  return {
+    // @ts-ignore
+    project: project?._id,
+    // @ts-ignore
+    version: version?._id,
+  };
 }
